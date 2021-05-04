@@ -1,57 +1,39 @@
 package web.dao;
 
-import org.hibernate.SessionFactory;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
-import org.springframework.transaction.annotation.Transactional;
-import web.model.Car;
 import web.model.User;
-
-import javax.persistence.Query;
-import javax.persistence.TypedQuery;
+import javax.persistence.EntityManager;
+import javax.persistence.PersistenceContext;
 import java.util.List;
 
 @Repository
-public class UserDAOImpl implements UserDAO{
+public class UserDAOImpl implements UserDAO {
 
-    @Autowired
-    private SessionFactory sessionFactory;
+    @PersistenceContext
+    private EntityManager entityManager;
 
-    @Transactional
     @Override
     public void add(User user) {
-        sessionFactory.getCurrentSession().save(user);
+        entityManager.persist(user);
     }
 
-    @SuppressWarnings("unchecked")
-    @Transactional(readOnly = true)
+    @Override
+    public void update(User user) {
+        entityManager.merge(user);
+    }
+
+    @Override
+    public void delete(Long id) {
+        entityManager.remove(findUserById(id));
+    }
+
     @Override
     public List<User> getAllUsers() {
-        TypedQuery<User> query=sessionFactory.getCurrentSession().createQuery("from User");
-        return query.getResultList();
+        return entityManager.createQuery("from User", User.class).getResultList();
     }
 
-    @SuppressWarnings("unchecked")
-    @Transactional(readOnly = true)
     @Override
-    public User findById(Long id) {
-        return sessionFactory.getCurrentSession().find(User.class, id);
+    public User findUserById(Long id) {
+        return entityManager.find(User.class, id);
     }
-
-    @Transactional
-    @Override
-    public void update(Long id, User user) {
-        User user1 = sessionFactory.getCurrentSession().find(User.class, id);
-        user1.setFirstName(user.getFirstName());
-        user1.setLastName(user.getLastName());
-        user1.setEmail(user.getEmail());
-        sessionFactory.getCurrentSession().update(user1);
-    }
-
-    @Transactional
-    public void delete(Long id) {
-        User user = sessionFactory.getCurrentSession().find(User.class, id);
-        sessionFactory.getCurrentSession().delete(user);
-    }
-
 }

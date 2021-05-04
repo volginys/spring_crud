@@ -6,7 +6,6 @@
     <title></title>
 </head>
 <body>
-
 <form th:method="POST" th:action="@{/users}" th:object="${user}">
     <label for="firstname">Enter first name: </label>
     <input type="text" th:field="*{firstName}" id="firstname"/>
@@ -19,6 +18,5 @@
     <br/>
     <input type="submit" value="Create!"/>
 </form>
-
 </body>
 </html>

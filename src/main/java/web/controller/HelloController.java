@@ -8,7 +8,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import java.util.ArrayList;
 import java.util.List;
 
-
 @Controller
 @RequestMapping(path = "/")
 public class HelloController {
@@ -22,5 +21,4 @@ public class HelloController {
 		model.addAttribute("messages", messages);
 		return "index";
 	}
-	
 }

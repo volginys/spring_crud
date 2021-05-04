@@ -11,5 +11,8 @@
         <h1 th:text="${msg}"></h1>
     </th:block>
 </div>
+<form th:method="GET" th:action="@{/users}">
+    <input type="submit" value="Users table"/>
+</form>
 </body>
 </html>
